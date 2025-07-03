@@ -15,7 +15,7 @@ def plot_metrics(opt_name, metrics):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy (%)')
     plt.title(f'{opt_name} Accuracy')
-    plt.xticks(epochs)
+    plt.xticks(np.arange(0, len(epochs)+1, 5))  # 只显示0和5的倍数
     plt.legend()
     
     # 损失曲线
@@ -25,7 +25,7 @@ def plot_metrics(opt_name, metrics):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title(f'{opt_name} Loss')
-    plt.xticks(epochs)
+    plt.xticks(np.arange(0, len(epochs)+1, 5))  # 只显示0和5的倍数
     plt.legend()
     
     plt.tight_layout()
@@ -57,6 +57,9 @@ def plot_comparison(optimizers=["SGD", "Adam", "SAM"]):
     if not all_data:
         return
     
+    # 设置x轴刻度
+    x_ticks = np.arange(0, len(epochs)+1, 5)  # 只显示0和5的倍数
+    
     # 综合准确率比较
     plt.subplot(2, 2, 1)
     for opt in all_data.keys():
@@ -64,7 +67,7 @@ def plot_comparison(optimizers=["SGD", "Adam", "SAM"]):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy (%)')
     plt.title('Train Accuracy Comparison')
-    plt.xticks(epochs)
+    plt.xticks(x_ticks)
     plt.legend()
     
     plt.subplot(2, 2, 2)
@@ -73,7 +76,7 @@ def plot_comparison(optimizers=["SGD", "Adam", "SAM"]):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy (%)')
     plt.title('Test Accuracy Comparison')
-    plt.xticks(epochs)
+    plt.xticks(x_ticks)
     plt.legend()
     
     # 综合损失比较
@@ -83,7 +86,7 @@ def plot_comparison(optimizers=["SGD", "Adam", "SAM"]):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title('Train Loss Comparison')
-    plt.xticks(epochs)
+    plt.xticks(x_ticks)
     plt.legend()
     
     plt.subplot(2, 2, 4)
@@ -92,7 +95,7 @@ def plot_comparison(optimizers=["SGD", "Adam", "SAM"]):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title('Test Loss Comparison')
-    plt.xticks(epochs)
+    plt.xticks(x_ticks)
     plt.legend()
     
     plt.tight_layout()
