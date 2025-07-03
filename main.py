@@ -10,7 +10,7 @@ if __name__ == "__main__":
     all_metrics = {}
     
     for opt in optimizers:
-        metrics = run_experiment(opt, num_epochs=10)
+        metrics = run_experiment(opt, num_epochs=50)
         all_metrics[opt] = metrics
         plot_metrics(opt, metrics)
     
