@@ -122,3 +122,69 @@ def load_metrics(filename):
         'test_loss': data[:, 2],
         'test_acc': data[:, 3]
     }
+
+
+def plot_metrics_comparison(opt_name, all_metrics):
+    """绘制同一种优化算法的不同参数配置比较图"""
+    plt.figure(figsize=(15, 10))
+    epochs = range(1, len(next(iter(all_metrics.values()))['train_loss']) + 1)
+    
+    # 设置颜色和线型
+    colors = plt.cm.tab10(np.linspace(0, 1, len(all_metrics)))
+    linestyles = ['-', '--', '-.', ':']
+    
+    # 训练准确率比较
+    plt.subplot(2, 2, 1)
+    for i, (config_name, metrics) in enumerate(all_metrics.items()):
+        plt.plot(epochs, metrics['train_acc'], 
+                label=f"{config_name}", 
+                color=colors[i], 
+                linestyle=linestyles[i % len(linestyles)])
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy (%)')
+    plt.title(f'{opt_name} Train Accuracy Comparison')
+    plt.xticks(np.arange(0, len(epochs)+1, 5))
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    # 测试准确率比较
+    plt.subplot(2, 2, 2)
+    for i, (config_name, metrics) in enumerate(all_metrics.items()):
+        plt.plot(epochs, metrics['test_acc'], 
+                label=f"{config_name}", 
+                color=colors[i], 
+                linestyle=linestyles[i % len(linestyles)])
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy (%)')
+    plt.title(f'{opt_name} Test Accuracy Comparison')
+    plt.xticks(np.arange(0, len(epochs)+1, 5))
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    # 训练损失比较
+    plt.subplot(2, 2, 3)
+    for i, (config_name, metrics) in enumerate(all_metrics.items()):
+        plt.plot(epochs, metrics['train_loss'], 
+                label=f"{config_name}", 
+                color=colors[i], 
+                linestyle=linestyles[i % len(linestyles)])
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title(f'{opt_name} Train Loss Comparison')
+    plt.xticks(np.arange(0, len(epochs)+1, 5))
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    # 测试损失比较
+    plt.subplot(2, 2, 4)
+    for i, (config_name, metrics) in enumerate(all_metrics.items()):
+        plt.plot(epochs, metrics['test_loss'], 
+                label=f"{config_name}", 
+                color=colors[i], 
+                linestyle=linestyles[i % len(linestyles)])
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title(f'{opt_name} Test Loss Comparison')
+    plt.xticks(np.arange(0, len(epochs)+1, 5))
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    plt.tight_layout()
+    plt.savefig(f'{opt_name}_params_comparison.png', dpi=300, bbox_inches='tight')
+    plt.close()

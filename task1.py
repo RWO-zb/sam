@@ -1,6 +1,6 @@
 # main.py
 import multiprocessing
-from train import run_experiment
+from train import run_experiment1
 from plot import plot_metrics, plot_comparison
 
 if __name__ == "__main__":
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     all_metrics = {}
     
     for opt in optimizers:
-        metrics = run_experiment(opt, num_epochs=100)
+        metrics = run_experiment1(opt, num_epochs=5)
         all_metrics[opt] = metrics
         plot_metrics(opt, metrics)
     
