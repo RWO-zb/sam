@@ -107,9 +107,14 @@ def run_experiment1(opt_name="SGD", num_epochs=10):
         params = list(model.parameters())
         optimizer = SAM(params, base_optimizer, rho=0.1, lr=0.05, momentum=0.9, weight_decay=5e-4)
         scheduler = optim.lr_scheduler.StepLR(optimizer.base_optimizer, step_size=30, gamma=0.1)
-
+    elif opt_name == "SAM1":
+        base_optimizer = optim.SGD
+        params = list(model.parameters())
+        optimizer = SAM(params, base_optimizer, rho=0.1, lr=0.05, momentum=0.9, weight_decay=5e-4)
+        scheduler = optim.lr_scheduler.StepLR(optimizer.base_optimizer, step_size=30, gamma=0.1)
+    
     for epoch in range(num_epochs):
-        train_loss, train_acc = train_epoch(model, optimizer, criterion, trainloader, use_sam=(opt_name == "SAM"))
+        train_loss, train_acc = train_epoch(model, optimizer, criterion, trainloader, use_sam=(opt_name == "SAM"or opt_name == "SAM1"))
         test_acc, test_loss = test_model(model, testloader)
         
         metrics['train_loss'].append(train_loss)
