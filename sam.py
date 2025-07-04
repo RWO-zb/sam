@@ -1,46 +1,41 @@
 import torch
 
 class SAM(torch.optim.Optimizer):
-    def __init__(self, params, base_optimizer, rho=0.05, adaptive=False, **kwargs):
-        self.rho = rho
-        self.adaptive = adaptive
-        defaults = dict(rho=rho, adaptive=adaptive, **kwargs)
-        self.base_optimizer = base_optimizer(params, **kwargs)
+    def __init__(self, params, base_optimizer, rho=0.05, **kwargs):
+        defaults = dict(rho=rho, **kwargs)
         super(SAM, self).__init__(params, defaults)
+        
+        # 确保传入的是优化器类而不是实例
+        if not isinstance(base_optimizer, type):
+            raise TypeError("base_optimizer must be a class (not instance)")
+        
+        self.base_optimizer = base_optimizer(self.param_groups, **kwargs)
+        self.param_groups = self.base_optimizer.param_groups
 
-    @torch.no_grad()
-    def first_step(self, zero_grad=True):
+    def first_step(self, zero_grad=False):
         grad_norm = self._grad_norm()
         for group in self.param_groups:
-            scale = self.rho / (grad_norm + 1e-12)
+            scale = group["rho"] / (grad_norm + 1e-12)
             for p in group["params"]:
-                if p.grad is None:
-                    continue
-                e_w = (torch.pow(p, 2) if self.adaptive else 1.0) * p.grad * scale.to(p)
-                p.add_(e_w)  # climb to the local maximum
-                self.state[p]["e_w"] = e_w
-        if zero_grad:
-            self.zero_grad()
+                if p.grad is None: continue
+                self.state[p]["old_p"] = p.data.clone()
+                p.data.add_(scale * p.grad.data)
+        
+        if zero_grad: self.zero_grad()
 
-    @torch.no_grad()
-    def second_step(self, zero_grad=True):
+    def second_step(self, zero_grad=False):
         for group in self.param_groups:
             for p in group["params"]:
-                if p.grad is None:
-                    continue
-                p.sub_(self.state[p]["e_w"])  # get back to "w"
-        self.base_optimizer.step()  # do the actual update
-        if zero_grad:
-            self.zero_grad()
-
-    def step(self, closure=None):
-        raise NotImplementedError("Use first_step and second_step instead.")
+                if p.grad is None: continue
+                p.data = self.state[p]["old_p"]
+        
+        self.base_optimizer.step()
+        if zero_grad: self.zero_grad()
 
     def _grad_norm(self):
-        shared_device = self.param_groups[0]["params"][0].device
         norm = torch.norm(
             torch.stack([
-                ((torch.abs(p) if self.adaptive else 1.0) * p.grad).norm(p=2).to(shared_device)
+                p.grad.norm(p=2)
                 for group in self.param_groups for p in group["params"]
                 if p.grad is not None
             ]),

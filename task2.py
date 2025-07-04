@@ -6,6 +6,11 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()
     
     optimizers = {
+        "SAM": [
+            {'rho': 0.1, 'lr': 0.05, 'momentum': 0.9},
+            {'rho': 0.05, 'lr': 0.05, 'momentum': 0.9},
+            {'rho': 0.2, 'lr': 0.05, 'momentum': 0.9}
+        ],
         "SGD": [
             {'lr': 0.1, 'momentum': 0.9},
             {'lr': 0.05, 'momentum': 0.9},
@@ -16,11 +21,7 @@ if __name__ == "__main__":
             {'lr': 1e-4},
             {'lr': 5e-4}
         ],
-        "SAM": [
-            {'rho': 0.1, 'lr': 0.05, 'momentum': 0.9},
-            {'rho': 0.05, 'lr': 0.05, 'momentum': 0.9},
-            {'rho': 0.2, 'lr': 0.05, 'momentum': 0.9}
-        ]
+       
     }
     
     all_results = {}

@@ -6,7 +6,7 @@ from plot import plot_metrics, plot_comparison
 if __name__ == "__main__":
     multiprocessing.freeze_support()
     
-    optimizers = ["SGD", "Adam", "SAM"]
+    optimizers = ["SAM","SGD", "Adam" ]
     all_metrics = {}
     
     for opt in optimizers:
