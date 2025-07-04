@@ -11,8 +11,18 @@
 
 # 运行方式
 
-执行以下指令运行代码：  
+执行任务一  
 ```bash
-python main.py
+python task1.py
+```
+执行任务二 
+```bash
+python task2.py
+```
+执行任务三  
+```bash
+python task3.py
 ```
 # 实验结果
+<p align="center">sam实现与比较</p>
+![sam实现与比较](https://github.com/RWO-zb/sam/raw/main/result/task1/comparison.png)
