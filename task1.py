@@ -1,4 +1,3 @@
-# main.py
 import multiprocessing
 from train import run_experiment1
 from plot import plot_metrics, plot_comparison

@@ -140,7 +140,6 @@ def run_experiment1(opt_name="SGD", num_epochs=10):
     
     return metrics
 
-# train.py (修改部分)
 def run_experiment2(opt_name="SGD", num_epochs=10, params_list=None):
     """运行完整实验，支持多参数配置"""
     if params_list is None:
@@ -158,14 +157,11 @@ def run_experiment2(opt_name="SGD", num_epochs=10, params_list=None):
         model = ResNet18_SAM(num_classes=10).to(device)
         criterion = nn.CrossEntropyLoss()
 
-        # 关键修复：将参数转换为列表并验证
         model_params = list(model.parameters())
         if not model_params:
             raise ValueError(f"Model parameters are empty for {opt_name} Config {i+1}")
         
         print(f"\n[Training {opt_name} Config {i+1}]")
-        print(f"Parameters on: {model_params[0].device}")
-        print(f"Total parameters: {sum(p.numel() for p in model_params)}")
 
         metrics = {
             'train_loss': [],

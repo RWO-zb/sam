@@ -5,7 +5,6 @@ class SAM(torch.optim.Optimizer):
         defaults = dict(rho=rho, **kwargs)
         super(SAM, self).__init__(params, defaults)
         
-        # 确保传入的是优化器类而不是实例
         if not isinstance(base_optimizer, type):
             raise TypeError("base_optimizer must be a class (not instance)")
         
