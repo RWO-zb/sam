@@ -24,5 +24,14 @@ python task2.py
 python task3.py
 ```
 # 实验结果
-<p align="center">sam实现与比较</p>
-![sam实现与比较](https://github.com/RWO-zb/sam/raw/main/result/task1/comparison.png)
+任务一结果
+![](https://github.com/RWO-zb/sam/raw/main/result/task1/comparison.png)
+任务二结果
+SGD
+![](https://github.com/RWO-zb/sam/raw/main/result/task2/SGD_params_comparison.png)
+Adam
+![](https://github.com/RWO-zb/sam/raw/main/result/task2/Adam_params_comparison.png)
+SAM
+![](https://github.com/RWO-zb/sam/raw/main/result/task2/SAM_params_comparison.png)
+任务三结果
+![](https://github.com/RWO-zb/sam/raw/main/result/task3/sam_vs_sam1_comparison.png)
